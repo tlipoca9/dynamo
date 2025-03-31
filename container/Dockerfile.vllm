@@ -382,6 +382,9 @@ COPY --from=build /workspace/dist/*.whl wheelhouse/
 RUN uv pip install ai-dynamo[vllm] --find-links wheelhouse && \
     rm -r wheelhouse
 
+# Install modelscope
+RUN uv pip install --system 'modelscope!=1.15.0'
+
 # Tell vllm to use the Dynamo LLM C API for KV Cache Routing
 ENV VLLM_KV_CAPI_PATH="/opt/dynamo/bindings/lib/libdynamo_llm_capi.so"
 
