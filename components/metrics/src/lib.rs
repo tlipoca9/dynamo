@@ -589,11 +589,13 @@ pub fn extract_metrics(endpoints: &[EndpointInfo]) -> Vec<ForwardPassMetrics> {
         .iter()
         .filter_map(|e| {
             let metrics_data = e.as_ref()?;
-            metrics_data.clone()
-            .decode::<StatsWithData>()
-            .map_err(|err| {
-                tracing::warn!("Error decoding stats: {err}");
-            }).ok()
+            metrics_data
+                .clone()
+                .decode::<StatsWithData>()
+                .map_err(|err| {
+                    tracing::warn!("Error decoding stats: {err}");
+                })
+                .ok()
         })
         .collect();
     tracing::debug!("Stats: {stats:?}");

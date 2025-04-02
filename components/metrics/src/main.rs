@@ -228,13 +228,21 @@ async fn app(runtime: Runtime) -> Result<()> {
         if endpoints.is_empty() {
             tracing::warn!("No endpoints found matching {service_path}");
         } else {
-            tracing::debug!("Found {} endpoints matching {}", endpoints.len(), service_path);
+            tracing::debug!(
+                "Found {} endpoints matching {}",
+                endpoints.len(),
+                service_path
+            );
         }
         let metrics = extract_metrics(&endpoints);
         if metrics.is_empty() {
             tracing::warn!("Extract metrics from endpoints got empty");
         } else {
-            tracing::debug!("Extracted {} metrics from {} endpoints", metrics.len(), endpoints.len());
+            tracing::debug!(
+                "Extracted {} metrics from {} endpoints",
+                metrics.len(),
+                endpoints.len()
+            );
         }
         let processed = postprocess_metrics(&metrics, &endpoints);
         if processed.endpoints.is_empty() {
