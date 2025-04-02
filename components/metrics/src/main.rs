@@ -228,31 +228,28 @@ async fn app(runtime: Runtime) -> Result<()> {
         if endpoints.is_empty() {
             tracing::warn!("No endpoints found matching {service_path}");
             continue;
-        } else {
-            tracing::debug!(
-                "Found {} endpoints matching {}",
-                endpoints.len(),
-                service_path
-            );
         }
+        tracing::debug!(
+            "Found {} endpoints matching {}",
+            endpoints.len(),
+            service_path
+        );
         let metrics = extract_metrics(&endpoints);
         if metrics.is_empty() {
             tracing::warn!("Extract metrics from endpoints got empty");
             continue;
-        } else {
-            tracing::debug!(
-                "Extracted {} metrics from {} endpoints",
-                metrics.len(),
-                endpoints.len()
-            );
         }
+        tracing::debug!(
+            "Extracted {} metrics from {} endpoints",
+            metrics.len(),
+            endpoints.len()
+        );
         let processed = postprocess_metrics(&metrics, &endpoints);
         if processed.endpoints.is_empty() {
             tracing::warn!("No endpoints to aggregated metrics");
             continue;
-        } else {
-            tracing::info!("Aggregated metrics: {processed:?}");
         }
+        tracing::info!("Aggregated metrics: {processed:?}");
 
         // Update Prometheus metrics
         metrics_collector.lock().await.update(&config, &processed);
