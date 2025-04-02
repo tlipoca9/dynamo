@@ -227,6 +227,7 @@ async fn app(runtime: Runtime) -> Result<()> {
             collect_endpoints(&target_component, &service_subject, scrape_timeout).await?;
         if endpoints.is_empty() {
             tracing::warn!("No endpoints found matching {service_path}");
+            continue;
         } else {
             tracing::debug!(
                 "Found {} endpoints matching {}",
@@ -237,6 +238,7 @@ async fn app(runtime: Runtime) -> Result<()> {
         let metrics = extract_metrics(&endpoints);
         if metrics.is_empty() {
             tracing::warn!("Extract metrics from endpoints got empty");
+            continue;
         } else {
             tracing::debug!(
                 "Extracted {} metrics from {} endpoints",
@@ -247,6 +249,7 @@ async fn app(runtime: Runtime) -> Result<()> {
         let processed = postprocess_metrics(&metrics, &endpoints);
         if processed.endpoints.is_empty() {
             tracing::warn!("No endpoints to aggregated metrics");
+            continue;
         } else {
             tracing::info!("Aggregated metrics: {processed:?}");
         }
