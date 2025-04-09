@@ -3230,6 +3230,7 @@ index 85b5f31e..05030292 100644
 +        """Background loop that continually checks to ensure the engine process
 +        is still alive.
 +        """
++        import time
 +        try:
 +            while True:
 +                # Check if the engine process is running:
@@ -3241,7 +3242,7 @@ index 85b5f31e..05030292 100644
 +                            f"Engine process (pid {self._engine_process.pid}) "
 +                            "died."))
 +                    break
-+
++                time.sleep(5)
 +                if await self.metrics_socket.poll(timeout=timeout):
 +                    # Metrics received- check the message
 +                    message: Frame = await self.metrics_socket.recv(copy=False)
