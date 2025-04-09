@@ -3275,7 +3275,7 @@ index 85b5f31e..05030292 100644
      async def run_output_handler_loop(self):
          """Get RequestOutputs from Engine and stream to Request Queues"""
  
-@@ -278,12 +363,26 @@ class MQLLMEngineClient(EngineClient):
+@@ -278,12 +365,26 @@ class MQLLMEngineClient(EngineClient):
              # Wait until server is ready.
              response = await self._wait_for_server_rpc(socket)
  
@@ -3302,7 +3302,7 @@ index 85b5f31e..05030292 100644
  
      def close(self):
          """Destroy the ZeroMQ Context."""
-@@ -293,6 +392,8 @@ class MQLLMEngineClient(EngineClient):
+@@ -293,6 +394,8 @@ class MQLLMEngineClient(EngineClient):
          # Cancel background tasks.
          if self.health_loop is not None:
              self.health_loop.cancel()
@@ -3311,7 +3311,7 @@ index 85b5f31e..05030292 100644
          if self.output_loop is not None:
              self.output_loop.cancel()
  
-@@ -415,6 +516,9 @@ class MQLLMEngineClient(EngineClient):
+@@ -415,6 +518,9 @@ class MQLLMEngineClient(EngineClient):
          """
          if self._errored_with is not None:
              raise self._errored_with
@@ -3321,7 +3321,7 @@ index 85b5f31e..05030292 100644
  
      @property
      def is_running(self) -> bool:
-@@ -473,6 +577,7 @@ class MQLLMEngineClient(EngineClient):
+@@ -473,6 +579,7 @@ class MQLLMEngineClient(EngineClient):
          trace_headers: Optional[Mapping[str, str]] = None,
          prompt_adapter_request: Optional[PromptAdapterRequest] = None,
          priority: int = 0,
@@ -3329,7 +3329,7 @@ index 85b5f31e..05030292 100644
          *,
          inputs: Optional[PromptType] = None  # DEPRECATED
      ) -> AsyncGenerator[RequestOutput, None]:
-@@ -502,7 +607,8 @@ class MQLLMEngineClient(EngineClient):
+@@ -502,7 +609,8 @@ class MQLLMEngineClient(EngineClient):
  
          return self._process_request(prompt, sampling_params, request_id,
                                       lora_request, trace_headers,
@@ -3339,7 +3339,7 @@ index 85b5f31e..05030292 100644
  
      @overload
      def encode(
-@@ -586,6 +692,7 @@ class MQLLMEngineClient(EngineClient):
+@@ -586,6 +694,7 @@ class MQLLMEngineClient(EngineClient):
          trace_headers: Optional[Mapping[str, str]] = None,
          prompt_adapter_request: Optional[PromptAdapterRequest] = None,
          priority: int = 0,
@@ -3347,7 +3347,7 @@ index 85b5f31e..05030292 100644
      ) -> Union[AsyncGenerator[RequestOutput, None], AsyncGenerator[
              PoolingRequestOutput, None]]:
          """Send an RPCGenerateRequest to the RPCServer and stream responses."""
-@@ -630,6 +737,12 @@ class MQLLMEngineClient(EngineClient):
+@@ -630,6 +739,12 @@ class MQLLMEngineClient(EngineClient):
              else:
                  lp_bytes = None
  
@@ -3360,7 +3360,7 @@ index 85b5f31e..05030292 100644
              request_bytes = pickle.dumps(
                  RPCProcessRequest(
                      prompt=prompt,
-@@ -639,11 +752,11 @@ class MQLLMEngineClient(EngineClient):
+@@ -639,11 +754,11 @@ class MQLLMEngineClient(EngineClient):
                      trace_headers=trace_headers,
                      prompt_adapter_request=prompt_adapter_request,
                      priority=priority,
@@ -3374,7 +3374,7 @@ index 85b5f31e..05030292 100644
              await self.input_socket.send_multipart(parts, copy=False)
  
              # 4) Stream the RequestOutputs from the output queue. Note
-@@ -705,3 +818,6 @@ class MQLLMEngineClient(EngineClient):
+@@ -705,3 +820,6 @@ class MQLLMEngineClient(EngineClient):
          # Raise on error, otherwise happily return None
          if isinstance(request_output, BaseException):
              raise request_output
