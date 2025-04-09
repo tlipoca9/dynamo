@@ -26,6 +26,9 @@ import click
 import psutil
 from click import Command, Context
 
+# ANSI color codes
+CYAN = '\033[1;36m'
+RESET = '\033[0;0m'
 
 class DynamoCommandGroup(click.Group):
     """Simplified version of BentoMLCommandGroup for Dynamo CLI"""
@@ -149,3 +152,33 @@ def path_to_uri(path: str) -> str:
     if psutil.POSIX:
         return pathlib.PurePosixPath(path).as_uri()
     raise ValueError("Unsupported OS")
+
+def add_prefix(file: t.TextIO, service_name: str, worker_id: int | None) -> None:
+    """Prepend each output line with process-specific prefix"""
+
+    if worker_id is None:
+        prefix = f"{CYAN}({service_name}){RESET} "
+    else:
+        prefix = f"{CYAN}({service_name} worker_id={worker_id}){RESET} "
+
+    file_write = file.write
+
+    def write_with_prefix(s: str):
+        if not s:
+            return
+        if file.start_new_line:  # type: ignore[attr-defined]
+            file_write(prefix)
+        idx = 0
+        while (next_idx := s.find('\n', idx)) != -1:
+            next_idx += 1
+            file_write(s[idx:next_idx])
+            if next_idx == len(s):
+                file.start_new_line = True  # type: ignore[attr-defined]
+                return
+            file_write(prefix)
+            idx = next_idx
+        file_write(s[idx:])
+        file.start_new_line = False  # type: ignore[attr-defined]
+
+    file.start_new_line = True  # type: ignore[attr-defined]
+    file.write = write_with_prefix  # type: ignore[method-assign]

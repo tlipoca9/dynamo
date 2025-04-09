@@ -22,6 +22,7 @@ import inspect
 import json
 import logging
 import os
+import sys
 import typing as t
 from typing import Any
 
@@ -31,6 +32,7 @@ import uvloop
 from dynamo.runtime import DistributedRuntime, dynamo_endpoint, dynamo_worker
 from dynamo.sdk import dynamo_context
 from dynamo.sdk.lib.service import LinkedServices
+from .utils import add_prefix
 
 logger = logging.getLogger(__name__)
 
@@ -90,6 +92,8 @@ def main(
                 )
             os.environ.update(env_list[worker_key])
 
+    add_prefix(sys.stdout, service_name, worker_id)
+    add_prefix(sys.stderr, service_name, worker_id)
     configure_server_logging()
     if runner_map:
         BentoMLContainer.remote_runner_mapping.set(
