@@ -3212,7 +3212,7 @@ index 85b5f31e..05030292 100644
      @staticmethod
      def is_unsupported_config(engine_args: AsyncEngineArgs):
          # Pipeline parallel not yet supported
-@@ -180,6 +210,61 @@ class MQLLMEngineClient(EngineClient):
+@@ -180,6 +210,63 @@ class MQLLMEngineClient(EngineClient):
          except Exception as e:
              self._set_errored(e)
  
