@@ -3243,6 +3243,7 @@ index 85b5f31e..05030292 100644
 +                            "died."))
 +                    break
 +                time.sleep(5)
++
 +                if await self.metrics_socket.poll(timeout=timeout):
 +                    # Metrics received- check the message
 +                    message: Frame = await self.metrics_socket.recv(copy=False)
