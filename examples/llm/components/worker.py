@@ -81,7 +81,9 @@ class VllmWorker:
 
         if self.engine_args.router == "kv":
             if self.engine_args.enable_prefix_caching is not True:
-                logger.info("When using KV router, prefix caching must be enabled, setting to True")
+                logger.info(
+                    "When using KV router, prefix caching must be enabled, setting to True"
+                )
                 self.engine_args.enable_prefix_caching = True
 
             VLLM_WORKER_ID = dynamo_context["endpoints"][0].lease_id()
