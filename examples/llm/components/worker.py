@@ -80,7 +80,7 @@ class VllmWorker:
                 self.engine_args.pipeline_parallel_size = 1
 
         if self.engine_args.router == "kv":
-            if self.engine_args.enable_prefix_caching is not True:
+            if not self.engine_args.enable_prefix_caching:
                 logger.info(
                     "When using KV router, prefix caching must be enabled, setting to True"
                 )
