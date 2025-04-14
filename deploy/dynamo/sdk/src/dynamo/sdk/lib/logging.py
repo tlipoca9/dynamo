@@ -20,7 +20,9 @@ import os
 from dynamo.runtime.logging import configure_logger as configure_dynamo_logger
 
 
-def configure_server_logging(service_name: str | None = None, worker_id: int | None = None):
+def configure_server_logging(
+    service_name: str | None = None, worker_id: int | None = None
+):
     """
     A single place to configure logging for Dynamo.
     """

@@ -17,7 +17,14 @@ import logging
 
 from pydantic import BaseModel
 
-from dynamo.sdk import DYNAMO_IMAGE, api, depends, dynamo_endpoint, service, configure_server_logging
+from dynamo.sdk import (
+    DYNAMO_IMAGE,
+    api,
+    configure_server_logging,
+    depends,
+    dynamo_endpoint,
+    service,
+)
 
 logger = logging.getLogger(__name__)
 

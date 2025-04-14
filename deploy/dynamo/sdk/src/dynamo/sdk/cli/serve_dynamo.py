@@ -114,9 +114,7 @@ def main(
 
             # Get Dynamo configuration and create component
             namespace, component_name = service.dynamo_address()
-            logger.info(
-                f"Registering component {namespace}/{component_name}"
-            )
+            logger.info(f"Registering component {namespace}/{component_name}")
             component = runtime.namespace(namespace).component(component_name)
 
             try:
@@ -165,9 +163,7 @@ def main(
                         if inspect.isawaitable(result):
                             # await on startup hook async_on_start
                             await result
-                            logger.debug(
-                                f"Completed async startup hook: {name}"
-                            )
+                            logger.debug(f"Completed async startup hook: {name}")
                         else:
                             logger.info(f"Completed startup hook: {name}")
                 logger.info(
