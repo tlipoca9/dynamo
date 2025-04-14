@@ -23,6 +23,7 @@ from dynamo.sdk.lib.decorators import async_on_start, dynamo_api, dynamo_endpoin
 from dynamo.sdk.lib.dependency import depends
 from dynamo.sdk.lib.image import DYNAMO_IMAGE
 from dynamo.sdk.lib.service import service
+from dynamo.sdk.lib.logging import configure_server_logging
 
 dynamo_context: dict[str, Any] = {}
 

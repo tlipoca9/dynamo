@@ -17,7 +17,7 @@ import logging
 
 from pydantic import BaseModel
 
-from dynamo.sdk import DYNAMO_IMAGE, api, depends, dynamo_endpoint, service
+from dynamo.sdk import DYNAMO_IMAGE, api, depends, dynamo_endpoint, service, configure_server_logging
 
 logger = logging.getLogger(__name__)
 
@@ -101,14 +101,15 @@ class Frontend:
     middle = depends(Middle)
 
     def __init__(self) -> None:
-        print("Starting frontend")
+        configure_server_logging(service_name="Frontend")
+        logger.info("Starting frontend")
 
     @api
     async def generate(self, text):
         """Stream results from the pipeline."""
-        print(f"Frontend received: {text}")
-        print(f"Frontend received type: {type(text)}")
+        logger.info(f"Frontend received: {text}")
+        logger.info(f"Frontend received type: {type(text)}")
         txt = RequestType(text=text)
-        print(f"Frontend sending: {type(txt)}")
+        logger.info(f"Frontend sending: {type(txt)}")
         async for response in self.middle.generate(txt.model_dump_json()):
             yield f"Frontend: {response}"

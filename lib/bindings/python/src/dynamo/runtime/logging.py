@@ -42,7 +42,7 @@ class LogHandler(logging.Handler):
 
 
 # Configure the Python logger to use the NimLogHandler
-def configure_logger():
+def configure_logger(service_name: str | None, worker_id: int | None):
     """
     Called once to configure the Python logger to use the LogHandler
     """
@@ -50,6 +50,13 @@ def configure_logger():
     logger.setLevel(logging.DEBUG)
     handler = LogHandler()
     # Simple formatter without date and level info since it's already provided by Rust
-    formatter = logging.Formatter("%(message)s")
+    if service_name is None and worker_id is None:
+        formatter = logging.Formatter("%(message)s")
+    elif service_name is None:
+        formatter = logging.Formatter(f"[worker_id={worker_id}] %(message)s")
+    elif worker_id is None:
+        formatter = logging.Formatter(f"[{service_name}] %(message)s")
+    if service_name is not None and worker_id is not None:
+        formatter = logging.Formatter(f"[{service_name} worker_id={worker_id}] %(message)s")
     handler.setFormatter(formatter)
     logger.addHandler(handler)

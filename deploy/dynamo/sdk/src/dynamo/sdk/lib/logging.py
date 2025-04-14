@@ -20,7 +20,7 @@ import os
 from dynamo.runtime.logging import configure_logger as configure_dynamo_logger
 
 
-def configure_server_logging():
+def configure_server_logging(service_name: str | None = None, worker_id: int | None = None):
     """
     A single place to configure logging for Dynamo.
     """
@@ -30,7 +30,7 @@ def configure_server_logging():
         root_logger.removeHandler(handler)
 
     # Configure the logger with Dynamo's handler
-    configure_dynamo_logger()
+    configure_dynamo_logger(service_name, worker_id)
 
     # Disable VLLM's default configuration
     os.environ["VLLM_CONFIGURE_LOGGING"] = "0"

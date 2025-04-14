@@ -261,7 +261,7 @@ def serve_http(
 
     from .allocator import ResourceAllocator
 
-    configure_server_logging()
+    configure_server_logging(service_name=service_name)
 
     bento_id: str = ""
     namespace: str = ""
