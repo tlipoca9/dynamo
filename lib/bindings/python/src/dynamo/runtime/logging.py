@@ -51,11 +51,10 @@ def configure_logger(service_name: str | None, worker_id: int | None):
     handler = LogHandler()
 
     # Simple formatter without date and level info since it's already provided by Rust
+    formatter = logging.Formatter("%(message)s")
     formatter_prefix = construct_formatter_prefix(service_name, worker_id)
     if len(formatter_prefix) != 0:
         formatter = logging.Formatter(f"[{formatter_prefix}] %(message)s")
-    else:
-        formatter = logging.Formatter("%(message)s")
 
     handler.setFormatter(formatter)
     logger.addHandler(handler)
