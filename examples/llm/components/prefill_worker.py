@@ -151,8 +151,6 @@ class PrefillWorker:
                         f"Prefill request {prefill_request.request_id} completed in {time_end - time_start:.2f}s"
                     )
 
-
-
     async def generate(self, request: RemotePrefillRequest):
         sampling_params = request.sampling_params
         sampling_params.max_tokens = 1
