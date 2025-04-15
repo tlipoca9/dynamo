@@ -60,6 +60,7 @@ def configure_logger(service_name: str | None, worker_id: int | None):
     handler.setFormatter(formatter)
     logger.addHandler(handler)
 
+
 def construct_formatter_prefix(service_name: str | None, worker_id: int | None):
     tmp = ""
     if service_name is not None:
