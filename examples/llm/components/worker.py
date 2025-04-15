@@ -18,6 +18,7 @@ import asyncio
 import logging
 import os
 import signal
+import time
 
 from components.disagg_router import PyDisaggregatedRouter
 from components.prefill_worker import PrefillWorker
@@ -207,6 +208,7 @@ class VllmWorker:
         # rust HTTP requires Delta streaming
         request.sampling_params.output_kind = RequestOutputKind.DELTA
 
+        time_start = time.time()
         async for response in self.engine_client.generate(
             prompt=request.engine_prompt,
             sampling_params=request.sampling_params,
@@ -221,3 +223,7 @@ class VllmWorker:
                 outputs=response.outputs,
                 finished=response.finished,
             ).model_dump_json()
+        time_end = time.time()
+        logger.info(
+            f"Request {request.request_id} completed in {time_end - time_start:.2f}s"
+        )

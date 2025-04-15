@@ -32,6 +32,7 @@ from vllm.transformers_utils.tokenizer import AnyTokenizer
 
 from dynamo.runtime import EtcdKvCache
 from dynamo.sdk import async_on_start, depends, dynamo_context, dynamo_endpoint, service
+from dynamo.sdk.lib.logging import configure_server_logging
 
 logger = logging.getLogger(__name__)
 
@@ -58,6 +59,7 @@ class Processor(ProcessMixIn):
     router = depends(Router)
 
     def __init__(self):
+        configure_server_logging(service_name=self.__class__.__name__)
         class_name = self.__class__.__name__
         self.engine_args = parse_vllm_args(class_name, "")
         self.model_config = self.engine_args.create_model_config()

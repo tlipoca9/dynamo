@@ -19,6 +19,7 @@ import logging
 import os
 import signal
 import sys
+import time
 
 from pydantic import BaseModel
 from utils.nixl import NixlMetadataStore
@@ -142,8 +143,14 @@ class PrefillWorker:
                     logger.info(
                         f"Dequeued prefill request: {prefill_request.request_id}"
                     )
+                    time_start = time.time()
                     async for _ in self.generate(prefill_request):
                         pass
+                    time_end = time.time()
+                    logger.info(
+                        f"Prefill request {prefill_request.request_id} completed in {time_end - time_start:.2f}s"
+                    )
+
 
     async def generate(self, request: RemotePrefillRequest):
         sampling_params = request.sampling_params

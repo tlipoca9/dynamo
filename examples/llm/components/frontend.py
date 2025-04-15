@@ -27,6 +27,7 @@ from dynamo import sdk
 from dynamo.sdk import depends, service
 from dynamo.sdk.lib.config import ServiceConfig
 from dynamo.sdk.lib.image import DYNAMO_IMAGE
+from dynamo.sdk.lib.logging import configure_server_logging
 
 logger = logging.getLogger(__name__)
 
@@ -57,6 +58,7 @@ class Frontend:
     processor = depends(Processor)
 
     def __init__(self):
+        configure_server_logging(service_name=self.__class__.__name__)
         config = ServiceConfig.get_instance()
         frontend_config = FrontendConfig(**config.get("Frontend", {}))
         self.frontend_config = frontend_config
