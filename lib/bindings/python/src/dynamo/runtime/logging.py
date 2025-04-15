@@ -49,16 +49,23 @@ def configure_logger(service_name: str | None, worker_id: int | None):
     logger = logging.getLogger()
     logger.setLevel(logging.DEBUG)
     handler = LogHandler()
+
     # Simple formatter without date and level info since it's already provided by Rust
-    if service_name and worker_id is not None:
-        formatter = logging.Formatter(
-            f"[{service_name} worker_id={worker_id}] %(message)s"
-        )
-    elif not service_name:
-        formatter = logging.Formatter(f"[worker_id={worker_id}] %(message)s")
-    elif worker_id is None:
-        formatter = logging.Formatter(f"[{service_name}] %(message)s")
+    formatter_prefix = construct_formatter_prefix(service_name, worker_id)
+    if len(formatter_prefix) != 0:
+        formatter = logging.Formatter(f"[{formatter_prefix}] %(message)s")
     else:
         formatter = logging.Formatter("%(message)s")
+
     handler.setFormatter(formatter)
     logger.addHandler(handler)
+
+def construct_formatter_prefix(service_name: str | None, worker_id: int | None):
+    tmp = ""
+    if service_name is not None:
+        tmp += f" {service_name}"
+
+    if worker_id is not None:
+        tmp += f" worker_id={worker_id}"
+
+    return tmp.strip()
