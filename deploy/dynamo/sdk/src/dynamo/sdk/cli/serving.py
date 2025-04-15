@@ -461,7 +461,7 @@ def serve_http(
                 ),
                 ignore_errors=True,
             )
-            logger.warn(f"arbiter: {arbiter.endpoint}")
+            logger.warning(f"arbiter: {arbiter.endpoint}")
             # save deployment state for planner
             if not namespace:
                 raise ValueError("No namespace found for service")
