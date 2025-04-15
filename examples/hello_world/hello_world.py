@@ -109,7 +109,9 @@ class Frontend:
     middle = depends(Middle)
 
     def __init__(self) -> None:
+        # Configure logging
         configure_server_logging(service_name="Frontend")
+
         logger.info("Starting frontend")
         config = ServiceConfig.get_instance()
         self.message = config.get("Frontend", {}).get("message", "front")
