@@ -63,9 +63,9 @@ def configure_logger(service_name: str | None, worker_id: int | None):
 def construct_formatter_prefix(service_name: str | None, worker_id: int | None) -> str:
     tmp = ""
     if service_name is not None:
-        tmp += f" {service_name}"
+        tmp += f"{service_name}"
 
     if worker_id is not None:
-        tmp += f" worker_id={worker_id}"
+        tmp += f":{worker_id}"
 
     return tmp.strip()
